@@ -1,0 +1,46 @@
+#!/bin/sh
+rendertext="True"
+prefix="/tmp/buienradar"
+resolution=$(xrandr | grep '*' | head -1 | awk '{print $1}')
+screen_width="${resolution%x*}"
+screen_height="${resolution#*x}"
+height=512
+width=550
+extension="png"
+
+[ -n "$1" ] && mode="$1" || mode="1h"
+
+timestamp=$(TZ=UCT date +%Y%m%d%H%M)
+if [ "$mode" = "1h" -o "$mode" = "1" -o "$mode" = "h" ]; then
+	amount=12
+	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRainNL?\
+		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
+		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=0&timestamp=${timestamp}"
+elif [ "$mode" = "3h" -o "$mode" = "3" ]; then
+	amount=18
+	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRainNL?\
+		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
+		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=1&timestamp=${timestamp}"
+elif [ "$mode" = "24h" -o "$mode" = "24" ]; then
+	amount=24
+	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRain24HourForecastNL?\
+		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
+		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=0&timestamp=${timestamp}"
+elif [ "$mode" = "48h" -o "$mode" = "48" ]; then
+	amount=24
+	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRain24HourForecastNL?\
+		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
+		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=0&timestamp=${timestamp}"
+else
+	printf "invalid mode\n"
+	exit
+fi
+
+rm -rf "${prefix}"
+mkdir -p "${prefix}/sub"
+
+wget "$URL" -O "${prefix}/radar.${extension}" &>/dev/null
+convert -crop "${width}x${height}" "$prefix/radar.png" "${prefix}/sub/radar%d.${extension}" 
+xpos="$(( (screen_width-width)/2 ))"
+ypos="$(( (screen_height-height)/2 ))"
+sxiv -s f -N "buienradar" -b -S "0.5" -g "${width}x${height}+${xpos}+${ypos}" $(find /tmp/buienradar/sub -maxdepth 1 -name "*.${extension}" | sort -V)
