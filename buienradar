@@ -13,28 +13,28 @@ extension="png"
 timestamp=$(TZ=UCT date +%Y%m%d%H%M)
 if [ "$mode" = "1h" -o "$mode" = "1" -o "$mode" = "h" ]; then
 	amount=12
-	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRainNL?\
-		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
-		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=0&timestamp=${timestamp}"
+	map="RadarMapRainNL"
+	skip=0
 elif [ "$mode" = "3h" -o "$mode" = "3" ]; then
 	amount=18
-	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRainNL?\
-		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
-		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=1&timestamp=${timestamp}"
+	map="RadarMapRainNL"
+	skip=1
 elif [ "$mode" = "24h" -o "$mode" = "24" ]; then
 	amount=24
-	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRain24HourForecastNL?\
-		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
-		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=0&timestamp=${timestamp}"
+	skip=0
+	map="RadarMapRain24HourForecastNL"
 elif [ "$mode" = "48h" -o "$mode" = "48" ]; then
 	amount=24
-	URL="https://image.buienradar.nl/2.0/image/sprite/RadarMapRain24HourForecastNL?\
-		extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
-		&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=0&timestamp=${timestamp}"
+	map="RadarMapRain24HourForecastNL"
+	skip=0
 else
 	printf "invalid mode\n"
 	exit
 fi
+
+URL="https://image.buienradar.nl/2.0/image/sprite/${map}?\
+	extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
+	&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=${skip}&timestamp=${timestamp}"
 
 rm -rf "${prefix}"
 mkdir -p "${prefix}/sub"
