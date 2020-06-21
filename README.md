@@ -1,4 +1,4 @@
-Dit script downloadt de de buienradar van [buienradar.nl](buienradar.nl) en laat het zien in de image viewer [sxiv](https://github.com/muennich/sxiv).
+This script downloads the rain radar from the Dutch website [buienradar.nl](buienradar.nl) and shows it in the image viewer [sxiv](https://github.com/muennich/sxiv).
 
 ## Dependencies
 - sxiv
@@ -7,9 +7,10 @@ Dit script downloadt de de buienradar van [buienradar.nl](buienradar.nl) en laat
 
 ## Usage
 
-Je kan de 2-, 3-, 24-, en 48-uurs voorspelling ophalen, met:
+You can get the 1-, 3-, 24-, and 48-hour forecast with:
 
 ```
 buienradar n
 ```
-Met n het aantal uren.
+
+, where n is the number of hours. Make sure to put the script somewhere in your PATH.
