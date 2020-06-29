@@ -7,25 +7,22 @@ screen_height="${resolution#*x}"
 height=512
 width=550
 extension="png"
+delay="0.7"
 
 [ -n "$1" ] && mode="$1" || mode="1h"
 
 timestamp=$(TZ=UCT date +%Y%m%d%H%M)
 if [ "$mode" = "1h" -o "$mode" = "1" -o "$mode" = "h" ]; then
-	amount=12
 	map="RadarMapRainNL"
+	amount=12
 	skip=0
 elif [ "$mode" = "3h" -o "$mode" = "3" ]; then
-	amount=18
 	map="RadarMapRainNL"
+	amount=18
 	skip=1
 elif [ "$mode" = "24h" -o "$mode" = "24" ]; then
-	amount=24
-	skip=0
 	map="RadarMapRain24HourForecastNL"
-elif [ "$mode" = "48h" -o "$mode" = "48" ]; then
 	amount=24
-	map="RadarMapRain24HourForecastNL"
 	skip=0
 else
 	printf "invalid mode\n"
@@ -34,7 +31,7 @@ fi
 
 URL="https://image.buienradar.nl/2.0/image/sprite/${map}?\
 	extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
-	&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=${skip}&timestamp=${timestamp}"
+	&renderBranding=False&renderBackground=True&history=0&forecast=${amount}&skip=${skip}&timestamp=${timestamp}&startIndex=24"	
 
 rm -rf "${prefix}"
 mkdir -p "${prefix}/sub"
@@ -43,4 +40,4 @@ wget "$URL" -O "${prefix}/radar.${extension}" &>/dev/null
 convert -crop "${width}x${height}" "$prefix/radar.png" "${prefix}/sub/radar%d.${extension}" 
 xpos="$(( (screen_width-width)/2 ))"
 ypos="$(( (screen_height-height)/2 ))"
-sxiv -s f -N "buienradar" -b -S "0.5" -g "${width}x${height}+${xpos}+${ypos}" $(find /tmp/buienradar/sub -maxdepth 1 -name "*.${extension}" | sort -V)
+sxiv -s f -N "buienradar" -b -S "$delay" -g "${width}x${height}+${xpos}+${ypos}" $(find /tmp/buienradar/sub -maxdepth 1 -name "*.${extension}" | sort -V)

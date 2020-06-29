@@ -7,7 +7,7 @@ This script downloads the rain radar from the Dutch website [buienradar.nl](buie
 
 ## Usage
 
-You can get the 1-, 3-, 24-, and 48-hour forecast with:
+You can get the 1-, 3- and 24-hour forecast with:
 
 ```
 buienradar n
