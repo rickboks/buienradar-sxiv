@@ -1,9 +1,8 @@
 #!/bin/sh
 rendertext="True"
 prefix="/tmp/buienradar"
-resolution=$(xrandr | grep '*' | head -1 | awk '{print $1}')
-screen_width="${resolution%x*}"
-screen_height="${resolution#*x}"
+screen_width="1920"
+screen_height="1080"
 height=512
 width=550
 extension="png"
@@ -36,8 +35,8 @@ extension=${extension}&width=${width}&height=${height}&renderText=${rendertext}\
 rm -rf "${prefix}"
 mkdir -p "${prefix}/sub"
 
-wget "$URL" -O "${prefix}/radar.${extension}" &>/dev/null
-convert -crop "${width}x${height}" "$prefix/radar.png" "${prefix}/sub/radar%d.${extension}" 
+wget --no-verbose "$URL" -O "${prefix}/radar.${extension}"
+magick convert "$prefix/radar.png" -crop "${width}x${height}" "${prefix}/sub/radar%d.${extension}" 
 xpos="$(( (screen_width-width)/2 ))"
 ypos="$(( (screen_height-height)/2 ))"
 sxiv -s f -N "buienradar" -b -S "$delay" -g "${width}x${height}+${xpos}+${ypos}" $(find /tmp/buienradar/sub -maxdepth 1 -name "*.${extension}" | sort -V)
