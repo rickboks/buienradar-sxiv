@@ -4,7 +4,6 @@ This script downloads the rain radar from the Dutch website [buienradar.nl](buie
 - sxiv
 - imagemagick
 - wget
-- xrandr
 
 ## Usage
 
