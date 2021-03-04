@@ -1,4 +1,4 @@
-This script downloads the rain radar from the Dutch website [buienradar.nl](buienradar.nl) and shows it in the image viewer [sxiv](https://github.com/muennich/sxiv).
+This script downloads the rain radar from the Dutch website [buienradar.nl](https://buienradar.nl) and shows it in the image viewer [sxiv](https://github.com/muennich/sxiv).
 
 ## Dependencies
 - sxiv
