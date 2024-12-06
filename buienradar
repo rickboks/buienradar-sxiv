@@ -36,7 +36,7 @@ rm -rf "${prefix}"
 mkdir -p "${prefix}/sub"
 
 wget --no-verbose "$URL" -O "${prefix}/radar.${extension}"
-magick convert "$prefix/radar.png" -crop "${width}x${height}" "${prefix}/sub/radar%d.${extension}" 
+magick "$prefix/radar.png" -crop "${width}x${height}" "${prefix}/sub/radar%d.${extension}" 
 xpos="$(( (screen_width-width)/2 ))"
 ypos="$(( (screen_height-height)/2 ))"
 sxiv -s f -N "buienradar" -b -S "$delay" -g "${width}x${height}+${xpos}+${ypos}" $(find /tmp/buienradar/sub -maxdepth 1 -name "*.${extension}" | sort -V)
